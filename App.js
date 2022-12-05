@@ -1,11 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import {
+  Audio,
+} from 'expo-av'
 
 export default function App() {
+  const[resolved, setResolved] = useState(false)
+  const[rejected, setRejected] = useState(false)
+
+  useEffect(() => {
+    const sound = new Audio.Sound()
+
+    sound.loadAsync({
+        uri: 'https://zombo.com',
+    }).then(() => setResolved(true)).catch(() => setRejected(true))
+  }, [])
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Text>{resolved? "resolved" : rejected ? "rejected": "loading"}</Text>
     </View>
   );
 }
